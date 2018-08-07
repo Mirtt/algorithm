@@ -1293,19 +1293,165 @@ public class Solution {
         Arrays.sort(numStr, c);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < nums.length; i++) {
-            if (!numStr[i].equals("0")){
+            if (!numStr[i].equals("0")) {
                 sb.append(numStr[i]);
             }
             nums[i] = Integer.parseInt(numStr[i]);
         }
-        return sb.toString().isEmpty()?"0":sb.toString();
+        return sb.toString().isEmpty() ? "0" : sb.toString();
+    }
+
+    /**
+     * 380. 两个链表的交叉
+     * 请写一个程序，找到两个单链表最开始的交叉节点。
+     * <p>
+     * 样例
+     * 下列两个链表：
+     * <p>
+     * A:          a1 → a2
+     * ↘
+     * c1 → c2 → c3
+     * ↗
+     * B:     b1 → b2 → b3
+     * 在节点 c1 开始交叉。
+     * <p>
+     * 挑战
+     * 需满足 O(n) 时间复杂度，且仅用 O(1) 内存。
+     * <p>
+     * 注意事项
+     * 如果两个链表没有交叉，返回null。
+     * 在返回结果后，两个链表仍须保持原有的结构。
+     * 可假定整个链表结构中没有循环。
+     *
+     * @param headA: the first list
+     * @param headB: the second list
+     * @return: a ListNode
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        // write your code here
+        if (headA == null || headB == null)
+            return null;
+        int aLen = 0;
+        int bLen = 0;
+        ListNode p = headA;
+        ListNode q = headB;
+        while (p != null) {
+            p = p.next;
+            aLen++;
+        }
+        while (q != null) {
+            q = q.next;
+            bLen++;
+        }
+        int dif = aLen > bLen ? aLen - bLen : bLen - aLen;
+        p = headA;
+        q = headB;
+        if (aLen > bLen) {
+            while (dif > 0) {
+                p = p.next;
+                dif--;
+            }
+        } else {
+            while (dif > 0) {
+                dif--;
+                q = q.next;
+            }
+        }
+        while (p != null) {
+            if (p == q)
+                return p;
+            p = p.next;
+            q = q.next;
+        }
+        return null;
+    }
+
+    /**
+     * 381. 螺旋矩阵 II
+     * 给你一个数n生成一个包含1-n^2的螺旋形矩阵
+     * <p>
+     * 样例
+     * n = 3
+     * 矩阵为
+     * <p>
+     * [
+     * [ 1, 2, 3 ],
+     * [ 8, 9, 4 ],
+     * [ 7, 6, 5 ]
+     * ]
+     *
+     * @param n: An integer
+     * @return: a square matrix
+     */
+    public int[][] generateMatrix(int n) {
+        // write your code here
+        if (n < 1)
+            return new int[0][0];
+        if (n == 1)
+            return new int[][]{{1}};
+        int[][] result = new int[n][n];
+        int row = n - 1;
+        int col = n - 1;
+        int rIndex = 0;
+        int cIndex = 0;
+        int num = 1;
+        int n2 = n * n;
+        while (num < n2 + 1) {
+            for (; cIndex <= col; cIndex++) {
+                result[rIndex][cIndex] = num++;
+            }
+            cIndex--;
+            rIndex++;
+            for (; rIndex <= row; rIndex++) {
+                result[rIndex][cIndex] = num++;
+            }
+            rIndex--;
+            cIndex--;
+            for (; cIndex >= n - col - 1; cIndex--) {
+                result[rIndex][cIndex] = num++;
+            }
+            rIndex--;
+            cIndex++;
+            for (; rIndex > n - row - 1; rIndex--) {
+                result[rIndex][cIndex] = num++;
+            }
+            row--;
+            col--;
+            rIndex++;
+            cIndex++;
+        }
+        return result;
+    }
+
+    /**
+     * 82. 落单的数
+     * 给出2*n + 1 个的数字，除其中一个数字之外其他每个数字均出现两次，找到这个数字。
+     * <p>
+     * <p>
+     * <p>
+     * 样例
+     * 给出 [1,2,2,1,3,4,3]，返回 4
+     * <p>
+     * 挑战
+     * 一次遍历，常数级的额外空间复杂度
+     *
+     * @param A: An integer array
+     * @return: An integer
+     */
+    public int singleNumber(int[] A) {
+        // write your code here
+        int r = 0;
+        for (int a : A) {
+            r ^= a;
+        }
+        return r;
     }
 
     public static void main(String[] args) {
-        long start = System.nanoTime();
-        String result = new Solution().minNumber(new int[]{0,0});
+        long start = System.currentTimeMillis();
+        int result = new Solution().singleNumber(new int[]{4});
         System.out.println(result);
-        System.out.println(System.nanoTime() - start);
+        System.out.println(System.currentTimeMillis() - start);
     }
 
     private static TreeNode initTree() {
