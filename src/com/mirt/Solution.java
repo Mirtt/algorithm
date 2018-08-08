@@ -1447,9 +1447,77 @@ public class Solution {
         return r;
     }
 
+    /**
+     * 61. 搜索区间
+     * 给定一个包含 n 个整数的排序数组，找出给定目标值 target 的起始和结束位置。
+     * <p>
+     * 如果目标值不在数组中，则返回[-1, -1]
+     * <p>
+     * 样例
+     * 给出[5, 7, 7, 8, 8, 10]和目标值target=8,
+     * <p>
+     * 返回[3, 4]
+     * <p>
+     * 挑战
+     * 时间复杂度 O(log n)
+     *
+     * @param A:      an integer sorted array
+     * @param target: an integer to be inserted
+     * @return: a list of length 2, [index1, index2]
+     */
+    public int[] searchRange(int[] A, int target) {
+        // write your code here
+        int begin = binarySearchFirst(A, target);
+        int end = binarySearchLast(A, target);
+
+        return new int[]{begin, end};
+    }
+
+    private int binarySearchFirst(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length - 1;
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            int midN = nums[mid];
+            if (midN == target) {
+                if (mid == start)
+                    return start;
+                if (nums[mid - 1] != target)
+                    return mid;
+                end = mid - 1;
+            }
+            if (midN > target)
+                end = mid - 1;
+            if (midN < target)
+                start = mid + 1;
+        }
+        return -1;
+    }
+
+    private int binarySearchLast(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length - 1;
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            int midN = nums[mid];
+            if (midN == target) {
+                if (mid == end)
+                    return start;
+                if (nums[mid + 1] != target)
+                    return mid;
+                start = mid + 1;
+            }
+            if (midN > target)
+                end = mid - 1;
+            if (midN < target)
+                start = mid + 1;
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        int result = new Solution().singleNumber(new int[]{4});
+        int[] result = new Solution().searchRange(new int[]{1, 2, 3, 3, 5}, 3);
         System.out.println(result);
         System.out.println(System.currentTimeMillis() - start);
     }
