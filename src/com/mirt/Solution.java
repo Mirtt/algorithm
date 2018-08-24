@@ -7,8 +7,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
@@ -597,7 +599,7 @@ public class Solution {
         int l = nums.length;
         if (nums[0] < nums[l - 1])
             return nums[0];
-        int start = 0, end = l - 1;
+        int start = 0, end =  l - 1;
         while (start < end) {
             int mid = (start + end) / 2;
             if (nums[mid] < nums[end]) {
@@ -890,7 +892,6 @@ public class Solution {
      * @param n: A 32bit integer
      * @return: An integer
      */
-    //fixme!!!!!
     public int fastPower(int a, int b, int n) {
         // write your code here
         long ans = 1, tmp = a;
@@ -1515,9 +1516,88 @@ public class Solution {
         return -1;
     }
 
+    /**
+     * 88. Lowest Common Ancestor of a Binary Tree
+     * 给定一棵二叉树，找到两个节点的最近公共父节点(LCA)。
+     * <p>
+     * 最近公共祖先是两个节点的公共的祖先节点且具有最大深度。
+     * <p>
+     * 样例
+     * 对于下面这棵二叉树
+     * <p>
+     * 4
+     * / \
+     * 3   7
+     * / \
+     * 5   6
+     * LCA(3, 5) = 4
+     * <p>
+     * LCA(5, 6) = 7
+     * <p>
+     * LCA(6, 7) = 7
+     * <p>
+     * 注意事项
+     * 假设给出的两个节点都在树中存在
+     *
+     * @param root: The root of the binary search tree.
+     * @param A:    A TreeNode in a Binary.
+     * @param B:    A TreeNode in a Binary.
+     * @return: Return the least common ancestor(LCA) of the two nodes.
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode A, TreeNode B) {
+        // write your code here
+        if (root == null) {
+            return null;
+        }
+        TreeNode left = lowestCommonAncestor(root.left, A, B);
+        TreeNode right = lowestCommonAncestor(root.right, A, B);
+
+        if (root == A || root == B) {
+            return root;
+        }
+        if (left != null && right != null) {
+            return root;
+        }
+
+        return right == null ? left : right;
+    }
+
+    /**
+     * 层次遍历树
+     *
+     * @param t 需要遍历的树
+     * @return 每一层包含在一个数组里，且内层数组中节点的根节点为同一个
+     */
+    public List<List<Integer>> test(TreeNode t) {
+        List<List<Integer>> rs = new ArrayList<>();
+        if (t == null)
+            return rs;
+        Queue<TreeNode> layer = new LinkedList<>();
+        List<Integer> data = new ArrayList<>();
+        data.add(t.val);
+        rs.add(data);
+        layer.offer(t);
+        while (!layer.isEmpty()) {
+            List<Integer> d = new ArrayList<>();
+            TreeNode tmp = layer.poll();
+            if (tmp.left != null) {
+                d.add(tmp.left.val);
+                layer.offer(tmp.left);
+            }
+            if (tmp.right != null) {
+                d.add(tmp.right.val);
+                layer.offer(tmp.right);
+            }
+            if (tmp.right != null || tmp.left != null)
+                rs.add(d);
+        }
+        return rs;
+    }
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        int[] result = new Solution().searchRange(new int[]{1, 2, 3, 3, 5}, 3);
+        TreeNode t = initTree();
+        List<List<Integer>> result = new Solution().test(t);
         System.out.println(result);
         System.out.println(System.currentTimeMillis() - start);
     }
@@ -1526,10 +1606,10 @@ public class Solution {
         TreeNode t1 = new TreeNode(-1);
         t1.left = new TreeNode(2);
         t1.right = new TreeNode(3);
-        t1.right = new TreeNode(3);
         t1.left.left = new TreeNode(41);
         t1.left.right = new TreeNode(-4);
         t1.right.left = new TreeNode(-12);
+        t1.right.right = new TreeNode(6);
         return t1;
     }
 
