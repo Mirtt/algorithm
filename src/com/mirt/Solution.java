@@ -599,7 +599,7 @@ public class Solution {
         int l = nums.length;
         if (nums[0] < nums[l - 1])
             return nums[0];
-        int start = 0, end =  l - 1;
+        int start = 0, end = l - 1;
         while (start < end) {
             int mid = (start + end) / 2;
             if (nums[mid] < nums[end]) {
@@ -1594,10 +1594,43 @@ public class Solution {
         return rs;
     }
 
+    /**
+     * 1478. 最接近target的值
+     * 给出一个数组，在数组中找到两个数，使得它们的和最接近目标值但不超过目标值，返回它们的和
+     * <p>
+     * 样例
+     * Input:target = 15
+     * array = [1,3,5,11,7]
+     * Output:14
+     * 注意事项
+     * 如果没有满足要求的结果就返回 -1.
+     *
+     * @param target: the target
+     * @param array:  an array
+     * @return: the closest value
+     */
+    public int closestTargetValue(int target, int[] array) {
+        // Write your code here
+        if (array == null || array.length < 2)
+            return -1;
+        int rs = -1;
+        int diff = Integer.MAX_VALUE;
+        int len = array.length;
+        for (int i = 0; i < len; i++) {
+            for (int j = i + 1; j < len; j++) {
+                int t = target - array[i] - array[j];
+                if (t >= 0 && t < diff) {
+                    rs = array[i] + array[j];
+                    diff = target - rs;
+                }
+            }
+        }
+        return rs;
+    }
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        TreeNode t = initTree();
-        List<List<Integer>> result = new Solution().test(t);
+        int result = new Solution().closestTargetValue(10, new int[]{10, 15, -15, 15, -5, -6, 9, 16, -14, -9});
         System.out.println(result);
         System.out.println(System.currentTimeMillis() - start);
     }
