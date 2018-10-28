@@ -1,18 +1,6 @@
 package com.mirt;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Lintcode
@@ -1628,10 +1616,60 @@ public class Solution {
         return rs;
     }
 
+    /**
+     * 39. 恢复旋转排序数组
+     * 给定一个旋转排序数组，在原地恢复其排序。
+     *
+     * 样例
+     * [4, 5, 1, 2, 3] -> [1, 2, 3, 4, 5]
+     *
+     * 挑战
+     * 使用O(1)的额外空间和O(n)时间复杂度
+     *
+     * 说明
+     * 什么是旋转数组？
+     *
+     * 比如，原始数组为[1,2,3,4], 则其旋转数组可以是[1,2,3,4], [2,3,4,1], [3,4,1,2], [4,1,2,3]
+     *
+     * @param nums: An integer array
+     * @return: nothing
+     */
+    public void recoverRotatedSortedArray(List<Integer> nums) {
+        // write your code here
+        if (nums == null || nums.size() < 1)
+            return;
+        int splitPoint = -1;
+        int indexNum = nums.get(0);
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums.get(i) < indexNum) {
+                splitPoint = i;
+                break;
+            }
+        }
+        if (splitPoint < 0) {
+            return;
+        }
+        reverseArray(nums, 0, splitPoint - 1);
+        reverseArray(nums, splitPoint, nums.size() - 1);
+        reverseArray(nums, 0, nums.size() - 1);
+    }
+
+    private void reverseArray(List<Integer> nums, int begin, int end) {
+        int i = begin;
+        int j = end;
+        while (i < j) {
+            int arr_i = nums.get(i);
+            int arr_j = nums.get(j);
+            nums.set(i++, arr_j);
+            nums.set(j--, arr_i);
+        }
+    }
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        int result = new Solution().closestTargetValue(10, new int[]{10, 15, -15, 15, -5, -6, 9, 16, -14, -9});
-        System.out.println(result);
+        List<Integer> r = Arrays.asList(5, 2, 3, 4);
+        new Solution().recoverRotatedSortedArray(r);
+        System.out.println(r);
         System.out.println(System.currentTimeMillis() - start);
     }
 
