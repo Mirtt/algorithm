@@ -1619,16 +1619,16 @@ public class Solution {
     /**
      * 39. 恢复旋转排序数组
      * 给定一个旋转排序数组，在原地恢复其排序。
-     *
+     * <p>
      * 样例
      * [4, 5, 1, 2, 3] -> [1, 2, 3, 4, 5]
-     *
+     * <p>
      * 挑战
      * 使用O(1)的额外空间和O(n)时间复杂度
-     *
+     * <p>
      * 说明
      * 什么是旋转数组？
-     *
+     * <p>
      * 比如，原始数组为[1,2,3,4], 则其旋转数组可以是[1,2,3,4], [2,3,4,1], [3,4,1,2], [4,1,2,3]
      *
      * @param nums: An integer array
@@ -1665,10 +1665,81 @@ public class Solution {
         }
     }
 
+    /**
+     * 1. A + B 问题
+     * 给出两个整数 aa 和 bb , 求他们的和。
+     * <p>
+     * 样例
+     * 如果 a=1 并且 b=2，返回3。
+     * <p>
+     * 挑战
+     * 显然你可以直接 return a + b，但是你是否可以挑战一下不这样做？（不使用++等算数运算符）
+     * <p>
+     * 说明
+     * a和b都是 32位 整数么？
+     * <p>
+     * 是的
+     * 我可以使用位运算符么？
+     * <p>
+     * 当然可以
+     * 注意事项
+     * 你不需要从输入流读入数据，只需要根据aplusb的两个参数a和b，计算他们的和并返回就行。
+     */
+    public int aplusb(int a, int b) {
+        // write your code here
+        int c = a^b;// 不需要进位
+        int d = (a&b)<<1;// 需要进位
+        return d == 0 ? c : aplusb(c, d);
+    }
+
+    /**
+     * 147. 水仙花数
+     * 水仙花数的定义是，这个数等于他每一位上数的幂次之和 见维基百科的定义
+     *
+     * 比如一个3位的十进制整数153就是一个水仙花数。因为 153 = 13 + 53 + 33。
+     *
+     * 而一个4位的十进制数1634也是一个水仙花数，因为 1634 = 14 + 64 + 34 + 44。
+     *
+     * 给出n，找到所有的n位十进制水仙花数。
+     *
+     * 样例
+     * 比如 n = 1, 所有水仙花数为：[0,1,2,3,4,5,6,7,8,9]。
+     * 而对于 n = 2, 则没有2位的水仙花数，返回 []。
+     *
+     * 注意事项
+     * 你可以认为n小于8。
+     *
+     * @param n: The number of digits
+     * @return: All narcissistic numbers with n digits
+     */
+    public List<Integer> getNarcissisticNumbers(int n) {
+        // write your code here
+        List<Integer> rs = new ArrayList<>();
+        if (n <= 0)
+            return rs;
+        if (n == 1) {
+            rs.addAll(Arrays.asList(0,1,2,3,4,5,6,7,8,9));
+            return rs;
+        }
+        int start = (int) Math.pow(10, n - 1);
+        int end = (int) Math.pow(10, n);
+        for (int i = start;i<end;i++){
+            int num = i;
+            int sum=0;
+            while (num != 0) {
+                int k = num%10;
+                num/=10;
+                sum += Math.pow(k, n);
+            }
+            if (i == sum) {
+                rs.add(i);
+            }
+        }
+        return rs;
+    }
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        List<Integer> r = Arrays.asList(5, 2, 3, 4);
-        new Solution().recoverRotatedSortedArray(r);
+        List<Integer> r = new Solution().getNarcissisticNumbers(3);
         System.out.println(r);
         System.out.println(System.currentTimeMillis() - start);
     }
