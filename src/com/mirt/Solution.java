@@ -1687,25 +1687,25 @@ public class Solution {
      */
     public int aplusb(int a, int b) {
         // write your code here
-        int c = a^b;// 不需要进位
-        int d = (a&b)<<1;// 需要进位
+        int c = a ^ b;// 不需要进位
+        int d = (a & b) << 1;// 需要进位
         return d == 0 ? c : aplusb(c, d);
     }
 
     /**
      * 147. 水仙花数
      * 水仙花数的定义是，这个数等于他每一位上数的幂次之和 见维基百科的定义
-     *
+     * <p>
      * 比如一个3位的十进制整数153就是一个水仙花数。因为 153 = 13 + 53 + 33。
-     *
+     * <p>
      * 而一个4位的十进制数1634也是一个水仙花数，因为 1634 = 14 + 64 + 34 + 44。
-     *
+     * <p>
      * 给出n，找到所有的n位十进制水仙花数。
-     *
+     * <p>
      * 样例
      * 比如 n = 1, 所有水仙花数为：[0,1,2,3,4,5,6,7,8,9]。
      * 而对于 n = 2, 则没有2位的水仙花数，返回 []。
-     *
+     * <p>
      * 注意事项
      * 你可以认为n小于8。
      *
@@ -1718,17 +1718,17 @@ public class Solution {
         if (n <= 0)
             return rs;
         if (n == 1) {
-            rs.addAll(Arrays.asList(0,1,2,3,4,5,6,7,8,9));
+            rs.addAll(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
             return rs;
         }
         int start = (int) Math.pow(10, n - 1);
         int end = (int) Math.pow(10, n);
-        for (int i = start;i<end;i++){
+        for (int i = start; i < end; i++) {
             int num = i;
-            int sum=0;
+            int sum = 0;
             while (num != 0) {
-                int k = num%10;
-                num/=10;
+                int k = num % 10;
+                num /= 10;
                 sum += Math.pow(k, n);
             }
             if (i == sum) {
@@ -1737,6 +1737,7 @@ public class Solution {
         }
         return rs;
     }
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
         List<Integer> r = new Solution().getNarcissisticNumbers(3);
