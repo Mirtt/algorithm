@@ -1738,9 +1738,47 @@ public class Solution {
         return rs;
     }
 
+    /**
+     * 1651. 区间异或 I
+     * cat-only-icon
+     * CAT 专属题目
+     * 给定数组A（下标从0到n-1，n为数组长度），和一个查询列表。每一项查询包括两个整数i和k。
+     * 对于每次查询，计算Ai, A(i + 1), ..., A(i+k-1)的异或值。结果保存在列表中。
+     * <p>
+     * 样例
+     * 对于数组[1,2,3,4] 和 查询[(0,2),(1,2)] 返回[3,1].
+     * <p>
+     * 注意事项
+     * 在大部分编程语言中你可以使用 '^'来进行异或运算。
+     * 在这个问题中，k永远等于2。
+     * 数组长度小于10000，查询次数小于1000。
+     * 保证Ai<1000,i+k<n。
+     *
+     * @param A:
+     * @param query:
+     * @return: nothing
+     */
+    public List<Integer> intervalXOR(int[] A, List<Interval> query) {
+        List<Integer> rs = new ArrayList<>();
+        if (query == null)
+            return rs;
+        for (Interval i : query) {
+            int start = i.start;
+            int end = i.start + i.end - 1;
+            int sum = 0;
+            for (int t = start; t <= end; t++) {
+                sum ^= A[t];
+            }
+            rs.add(sum);
+        }
+        return rs;
+    }
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        List<Integer> r = new Solution().getNarcissisticNumbers(3);
+        List<Interval> intervals = new ArrayList<>();
+        intervals.add(new Interval(1, 2));
+        List<Integer> r = new Solution().intervalXOR(new int[]{1, 2, 3, 4,}, intervals);
         System.out.println(r);
         System.out.println(System.currentTimeMillis() - start);
     }
@@ -1914,5 +1952,15 @@ class MinStack {
     public int min() {
         // write your code here
         return minStack.peek();
+    }
+
+}
+
+class Interval {
+    int start, end;
+
+    Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
     }
 }
