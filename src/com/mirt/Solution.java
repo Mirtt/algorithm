@@ -331,12 +331,12 @@ public class Solution {
     public List<List<Character>> combination(List<Character> characters, int n) {
         if (characters.size() < n)
             return new ArrayList<>(0);
-        List<List<Character>> result = dfs(new ArrayList<>(), new ArrayList<>(), characters, n);
+        List<List<Character>> result = dfs4c(new ArrayList<>(), new ArrayList<>(), characters, n);
 
         return result;
     }
 
-    private List<List<Character>> dfs(List<List<Character>> result, List<Character> target, List<Character> characters, int maxDepth) {
+    private List<List<Character>> dfs4c(List<List<Character>> result, List<Character> target, List<Character> characters, int maxDepth) {
         if (target.size() == maxDepth) {
             result.add(new ArrayList<>(target));
             return result;
@@ -344,7 +344,7 @@ public class Solution {
         for (int i = 0; i < characters.size(); i++) {
             if (!target.contains(characters.get(i))) {
                 target.add(characters.get(i));
-                dfs(result, target, characters, maxDepth);
+                dfs4c(result, target, characters, maxDepth);
                 target.remove(target.size() - 1);
             }
         }
@@ -1774,12 +1774,104 @@ public class Solution {
         return rs;
     }
 
+    /**
+     * 1776. 梯形的面积
+     * <p>
+     * 梯形面积的计算公式是(a + b) * h / 2;现在给出a, b, h。返回梯形的面积。
+     * <p>
+     * 样例
+     * 样例 1：
+     * <p>
+     * 输入 : a = 2, b = 4, h = 4
+     * 输出 : 12
+     * 解析：area = (2 + 4) * 4 / 2 = 12
+     * 样例 2:
+     * <p>
+     * 输入 : a = 4, b = 6, h = 2
+     * 输出 : 10
+     * 解析：area = (4 + 6) * 2 / 2 = 10
+     * 注意事项
+     * 面积的数据类型是double
+     *
+     * @param a:
+     * @param b:
+     * @param h:
+     * @return: Return the area of trapezoid
+     */
+    public double AreaOfTrapezoid(int a, int b, int h) {
+        // Write your code here
+        return (a + b) * h / 2.0d;
+    }
+
+    /**
+     * 16. 带重复元素的排列
+     * <p>
+     * 给出一个具有重复数字的列表，找出列表所有不同的排列。
+     * <p>
+     * 样例
+     * 样例 1：
+     * <p>
+     * 输入：[1,1]
+     * 输出：
+     * [
+     * [1,1]
+     * ]
+     * 样例 2：
+     * <p>
+     * 输入：[1,2,2]
+     * 输出：
+     * [
+     * [1,2,2],
+     * [2,1,2],
+     * [2,2,1]
+     * ]
+     * 挑战
+     * 使用递归和非递归分别完成该题。
+     *
+     * @param : A list of integers
+     * @return: A list of unique permutations
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        // write your code here
+
+        // 这一步排序的作用 在dfs中 可以保证不出现重复列表
+        Arrays.sort(nums);
+        List<List<Integer>> list = dfs4N(new ArrayList<>(), new ArrayList<>(), nums, new boolean[nums.length]);
+
+        return new ArrayList<>(list);
+    }
+
+    public List<List<Integer>> dfs4N(List<List<Integer>> rs, List<Integer> target, int[] nums, boolean[] visited) {
+        if (target.size() == nums.length) {
+            rs.add(new ArrayList<>(target));
+            return rs;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i]) {
+                continue;
+            }
+            // 由于nums已经排序 所以此时如果 i-1 和 i 的数字一样，并且i-1没有被保存过 说明 在 遍历到i-1 和 i的时候已经出现过这种组合 故此时应该排除
+            if (i > 0 && nums[i] == nums[i - 1] && !visited[i - 1]) {
+                continue;
+            }
+
+            visited[i] = true;
+
+            target.add(nums[i]);
+            dfs4N(rs, target, nums, visited);
+            target.remove(target.size() - 1);
+
+            visited[i] = false;
+
+        }
+        return rs;
+    }
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        List<Interval> intervals = new ArrayList<>();
-        intervals.add(new Interval(1, 2));
-        List<Integer> r = new Solution().intervalXOR(new int[]{1, 2, 3, 4,}, intervals);
+        List<List<Integer>> r = new Solution().permuteUnique(new int[]{1, 2,2});
         System.out.println(r);
+        System.out.println(r.size());
         System.out.println(System.currentTimeMillis() - start);
     }
 
