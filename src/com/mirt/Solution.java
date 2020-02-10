@@ -1867,9 +1867,52 @@ public class Solution {
         return rs;
     }
 
+    /**
+     * 29. 交叉字符串
+     * 给出三个字符串:s1、s2、s3，判断s3是否由s1和s2交叉构成。
+     * <p>
+     * 样例
+     * 样例 1：
+     * <p>
+     * 输入:
+     * "aabcc"
+     * "dbbca"
+     * "aadbbcbcac"
+     * 输出:
+     * true
+     * 样例 2：
+     * <p>
+     * 输入:
+     * ""
+     * ""
+     * "1"
+     * 输出:
+     * false
+     * 样例 3：
+     * <p>
+     * 输入:
+     * "aabcc"
+     * "dbbca"
+     * "aadbbbaccc"
+     * 输出:
+     * false
+     * 挑战
+     * 要求时间复杂度为O(n2)或者更好
+     *
+     * @param s1: A string
+     * @param s2: A string
+     * @param s3: A string
+     * @return: Determine whether s3 is formed by interleaving of s1 and s2
+     */
+    public boolean isInterleave(String s1, String s2, String s3) {
+        // write your code here
+        // 需要用到动态规划。。这部分不太会 不做了
+        return false;
+    }
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        List<List<Integer>> r = new Solution().permuteUnique(new int[]{1, 2,2});
+        List<List<Integer>> r = new Solution().permuteUnique(new int[]{1, 2, 2});
         System.out.println(r);
         System.out.println(r.size());
         System.out.println(System.currentTimeMillis() - start);
