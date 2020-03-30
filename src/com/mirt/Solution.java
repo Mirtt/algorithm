@@ -1906,15 +1906,67 @@ public class Solution {
      */
     public boolean isInterleave(String s1, String s2, String s3) {
         // write your code here
-        // 需要用到动态规划。。这部分不太会 不做了
+        // 需要用到动态规划。。这部分不太会 暂时不做了
         return false;
+    }
+
+    /**
+     * 6. 合并排序数组 II
+     * 合并两个有序升序的整数数组A和B变成一个新的数组。新数组也要有序。
+     *
+     * 样例
+     * 样例 1:
+     *
+     * 输入: A=[1], B=[1]
+     * 输出:[1,1]
+     * 样例解释: 返回合并后的数组。
+     * 样例 2:
+     *
+     * 输入: A=[1,2,3,4], B=[2,4,5,6]
+     * 输出: [1,2,2,3,4,4,5,6]
+     * 样例解释: 返回合并后的数组。
+     * 挑战
+     * 你能否优化你的算法，如果其中一个数组很大而另一个数组很小？
+     *
+     * @param A: sorted integer array A
+     * @param B: sorted integer array B
+     * @return: A new sorted integer array
+     */
+    public int[] mergeSortedArray(int[] A, int[] B) {
+        if (A == null || A.length == 0) {
+            return B;
+        }
+        if (B == null || B.length == 0) {
+            return A;
+        }
+        int lenA = A.length;
+        int lenB = B.length;
+        int indexA = 0, indexB = 0, index = 0;
+        int[] rs = new int[lenA + lenB];
+        while (indexA < lenA && indexB < lenB) {
+            if (A[indexA] < B[indexB]) {
+                rs[index++] = A[indexA++];
+            } else {
+                rs[index++] = B[indexB++];
+            }
+        }
+        if (indexA < lenA) {
+            for (int i = indexA; i < lenA; i++) {
+                rs[index++] = A[i];
+            }
+        }
+        if (indexB < lenB) {
+            for (int i = indexB; i < lenB; i++) {
+                rs[index++] = B[i];
+            }
+        }
+        return rs;
     }
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        List<List<Integer>> r = new Solution().permuteUnique(new int[]{1, 2, 2});
-        System.out.println(r);
-        System.out.println(r.size());
+        int[] r = new Solution().mergeSortedArray(new int[]{8,9}, new int[]{2, 3, 6, 8});
+        System.out.println(Arrays.toString(r));
         System.out.println(System.currentTimeMillis() - start);
     }
 
